@@ -1,28 +1,17 @@
 version: "3.2"
+
 services:
   php:
     container_name: ${COMPOSE_PROJECT_NAME}_php
-##    image: vavyskov/php:${PHP_VERSION}-apache-stretch
     image: vavyskov/php-ssh:${PHP_VERSION}-apache-stretch
-#    build:
-#      context: ../docker-php-ssh/stretch/apache
-#      args:
-#        PHP_VERSION: ${PHP_VERSION}
-    environment:
-      VIRTUAL_HOST: ${COMPOSE_PROJECT_NAME}.local
     hostname: ${COMPOSE_PROJECT_NAME}.local
     depends_on:
       - mariadb
-      - postgres
-    networks:
-      - backend
-      - frontend
     ports:
-      - "8002:80"
+      - "80:80"
       - "2202:22"
     volumes:
       - html:/var/www/html
-      #- ./html:/var/www/html
   mariadb:
     container_name: ${COMPOSE_PROJECT_NAME}_mariadb
     image: mariadb:${MARIADB_VERSION:-latest}
@@ -31,87 +20,30 @@ services:
       MYSQL_DATABASE: "${MARIADB_DATABASE}"
       MYSQL_USER: "${MARIADB_USERNAME}"
       MYSQL_PASSWORD: "${MARIADB_PASSWORD}"
-    networks:
-      - backend
     ports:
-      - "33062:3306"
+      - "3306:3306"
     volumes:
       - mariadb:/var/lib/mysql
-      #- ./mariadb:/var/lib/mysql
-    #restart: always
   postgres:
     container_name: ${COMPOSE_PROJECT_NAME}_postgres
     image: postgres:${POSTGRES_VERSION:-latest}
     volumes:
       - postgres:/var/lib/postgres/data
-      ## Local sharing - Create local folder "postgres"
-      #- ./postgres:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: ${POSTGRES_DATABASE}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    #restart: always
   adminer:
     container_name: ${COMPOSE_PROJECT_NAME}_adminer
-    image: adminer:fastcgi
-    networks:
-      - backend
+    image: adminer:latest
     ports:
       - "8080:8080"
   mailcatcher:
     container_name: ${COMPOSE_PROJECT_NAME}_mailcatcher
     image: vavyskov/mailcatcher
-    #build:
-    #  context: ./mailcatcher
-    networks:
-      - backend
     ports:
       - "1080:80"
       - "1025:25"
-#  ssh:
-#    container_name: ${COMPOSE_PROJECT_NAME}_ssh
-#    image: vavyskov/ssh:vavyskov-php-${PHP_VERSION}-apache-stretch
-##    build:
-##      context: ../docker-ssh/stretch
-##      args:
-##        SSH_PHP_FROM: ${PHP_FROM}
-##        SSH_COMPOSER_FROM: ${COMPOSER_FROM}
-#    environment:
-#      USER_NAME: ${USER_NAME}
-#      USER_PASSWORD: ${USER_PASSWORD}
-#      USER_GROUP: ${USER_GROUP}
-#      #USER_HOME: ${USER_HOME}
-#    networks:
-#      - backend
-#    ports:
-#      - "2202:22"
-#    volumes:
-#      - html:/var/www/html
-#      #- ./ssh:/data/.ssh:ro
-#      ## Uncomment next line if you're bringing your own sshd_config
-#      # - ./etc/ssh/sshd_config:/etc/ssh/sshd_config:ro
-#    #restart: on-failure:10
-#  samba:
-#    container_name: ${COMPOSE_PROJECT_NAME}_samba
-##    image: vavyskov/samba:alpine3.10
-##    image: vavyskov/samba:stretch
-#    build:
-#      context: ../docker-samba/stretch
-##      context: ../docker-samba/alpine3.10
-#    environment:
-#      USER_NAME: ${USER_NAME}
-#      USER_PASSWORD: ${USER_PASSWORD}
-#      USER_GROUP: ${USER_GROUP}
-#      #USER_HOME: ${USER_HOME}
-#    networks:
-#      - backend
-#    ports:
-#      - "445:445"
-#    volumes:
-#      - html:/var/www/html
-networks:
-  backend:
-  frontend:
 volumes:
   html:
   mariadb:
