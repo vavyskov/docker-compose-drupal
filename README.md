@@ -3,7 +3,7 @@
 LAMP stack (Debian, Apache, MariaDB, PHP, Adminer, MailCatcher)
 
 ## Requirements
-1. [Docker CE](https://download.docker.com?target=_blank) or [**Docker Toolbox**](https://www.vagrantup.com/?target=_blank) (Virtualbox)
+1. [Docker CE](https://download.docker.com?target=_blank) or [**Docker Toolbox**](https://github.com/docker/toolbox/releases?target=_blank) (Virtualbox)
 
 1. [Git](https://git-scm.com/?target=_blank) (optional)
 
