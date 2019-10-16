@@ -35,7 +35,7 @@ LAMP stack (Debian, Apache, MariaDB, PHP, Adminer, MailCatcher)
     **Web**:
     - URL: `localhost` or `192.168.99.100` (Docker Toolbox)
     
-    **SSH**
+    **SSH** (SFTP)
     - Port: `2202`
     - User: `www-data`
     - Password: `www-data`
