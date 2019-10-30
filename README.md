@@ -34,12 +34,6 @@ LAMP stack (Debian, Apache, MariaDB, PHP, Adminer, MailCatcher)
 
     **Web**:
     - URL: `localhost` or `192.168.99.100` (Docker Toolbox)
-    
-    **SSH** (SFTP)
-    - Port: `2202`
-    - User: `www-data`
-    - Password: `www-data`
-    - **Edit directory** `/var/www/html` as you needed
 
     **Adminer**:
     - URL: `localhost:8080` or `192.168.99.100:8080` (Docker Toolbox)
@@ -50,6 +44,18 @@ LAMP stack (Debian, Apache, MariaDB, PHP, Adminer, MailCatcher)
 	
 	**Mailcatcher** displays sent emails:
 	- URL: `localhost:1080` or `192.168.99.100:1080` (Docker Toolbox)
+
+1. SSH (SFTP)
+    - Port: `2202`
+    - User: `www-data`
+    - Password: `www-data`
+    - **Edit directory** `/var/www/html` as you needed
+
+1. Composer, Drupal, Drush
+    
+    Install Drupal with Composer and then run command:
+
+        source ~/.bashrc 
 
 1. Optional configure your system `hosts` file:
 
