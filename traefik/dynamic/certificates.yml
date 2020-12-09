@@ -1,0 +1,17 @@
+#http:
+#  middlewares:
+#    https-redirect:
+#      redirectScheme:
+#        scheme: https
+
+tls:
+  certificates:
+    - certFile: /etc/ssl/path/project-example-com.crt
+      keyFile: /etc/ssl/path/project-example-com.key
+    - certFile: /etc/ssl/path/traefik-example-com.crt
+      keyFile: /etc/ssl/path/traefik-example-com.key
+#  stores:
+#    default:
+#      defaultCertificate:
+#        certFile: /etc/ssl/path/default.crt
+#        keyFile: /etc/ssl/path/defaul.key
