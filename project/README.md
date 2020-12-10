@@ -27,14 +27,16 @@ Content:
 1. Open the web browser:
 
    **Web**:
-    - URL: `127.0.0.1:8083` or `localhost:8083` (Docker CE)
-    - URL: `192.168.99.100:8083` (Docker Toolbox)
-    - URL: `project.example.com` (etc/hosts)
+    - URL:
+        - Docker CE: `127.0.0.1:8083` or `localhost:8083`
+        - Docker Toolbox: `192.168.99.100:8083`
+        - Traefik (hosts): `project.example.com`
 
    **Adminer**:
-    - URL: `127.0.0.1:8083/adminer` or `localhost:8083/adminer` (Docker CE)
-    - URL: `192.168.99.100:8083/adminer` (Docker Toolbox)
-    - URL: `project.example.com/adminer` (etc/hosts)
+    - URL:
+        - Docker CE `127.0.0.1:8084` or `localhost:8084`
+        - Docker Toolbox:: `192.168.99.100:8084`
+        - Traefik (hosts): `project.example.com/adminer`
     - MySQL/MariaDB:
         - Server: `mariadb`
         - User: `mariadb`
@@ -47,15 +49,21 @@ Content:
         - Database: `postgres`
 
    **Mailcatcher** displays sent emails:
-    - URL: `127.0.0.1:1026` or `localhost:1026` (Docker CE)
-    - URL: `192.168.99.100:1026` (Docker Toolbox)
-    - URL: `mailcatcher.example.com` (etc/hosts)
+    - URL: 
+        - Docker CE: `127.0.0.1:1081` or `localhost:1081`
+        - Docker Toolbox:: `192.168.99.100:1081`
+        - Traefik (hosts): `mailcatcher.example.com`
 
 1. SSH (SFTP)
+    - Host:
+        - Docker CE: `127.0.0.1` or `localhost`
+        - Docker Toolbox: `192.168.99.100`
+        - Traefik (hosts): `project.example.com`
     - Port: `2222`
     - User: `user`
     - Password: `password`
-    - **Edit directory** `/var/www/html` as you needed
+    - Example command: `ssh -p 2222 user@192.168.99.100`
+    - **Edit the directory** `/var/www/html` and `/var/www/html/public` as you needed.
 
 1. Optionally install **Drush** (is included in the Drupal composer installation) with Composer and then run command:
 
@@ -67,7 +75,7 @@ Content:
        echo 'alias drush="~/.composer/vendor/bin/drush"' >> ~/.bashrc
        (echo 'alias drush="~/html/vendor/bin/drush"' >> ~/.bashrc)
        
-       source ~/.bashrc 
+       source ~/.bashrc
 
     Basic command:
 
