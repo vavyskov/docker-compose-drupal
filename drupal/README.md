@@ -28,42 +28,51 @@ Content:
 
    **Web**:
     - URL:
-        - Docker CE: `127.0.0.1:8083` or `localhost:8083`
+        - Docker CE: `localhost:8083` or `127.0.0.1:8083`
         - Docker Toolbox: `192.168.99.100:8083`
-        - Traefik (hosts): `project.example.com`
+        - Traefik (hosts): `drupal.example.com`
 
    **Adminer**:
     - URL:
-        - Docker CE `127.0.0.1:8084` or `localhost:8084`
-        - Docker Toolbox:: `192.168.99.100:8084`
-        - Traefik (hosts): `project.example.com/adminer`
+        - Docker CE: `localhost:8084` or `127.0.0.1:8084`
+        - Docker Toolbox: `192.168.99.100:8084`
+        - Traefik (hosts): `adminer.example.com`
     - MySQL/MariaDB:
-        - Server: `mariadb`
-        - User: `mariadb`
-        - Password: `mariadb`
-        - Database: `mariadb`
+        - Host and port: 
+            - Docker CE: `localhost:3308` or `127.0.0.1:3308`
+            - Docker Toolbox: `192.168.99.110:3308`
+        - User: `drupal`
+        - Password: `drupal`
+        - Database: `drupal`
     - PostgreSQL:
-        - Server: `postgres`
-        - User: `postgres`
-        - Password: `postgres`
-        - Database: `postgres`
+        - Host and port:
+            - Docker CE: `localhost:5434` or `127.0.0.1:5434`
+            - Docker Toolbox: `192.168.99.110:5434`
+        - User: `drupal`
+        - Password: `drupal`
+        - Database: `drupal`
 
    **Mailcatcher** displays sent emails:
     - URL: 
-        - Docker CE: `127.0.0.1:1081` or `localhost:1081`
+        - Docker CE: `localhost:1081` or `127.0.0.1:1081`
         - Docker Toolbox:: `192.168.99.100:1081`
         - Traefik (hosts): `mailcatcher.example.com`
 
 1. SSH (SFTP)
     - Host:
-        - Docker CE: `127.0.0.1` or `localhost`
+        - Docker CE: `localhost` or `127.0.0.1`
         - Docker Toolbox: `192.168.99.100`
-        - Traefik (hosts): `project.example.com`
+        - Traefik (hosts): `drupal.example.com`
     - Port: `2222`
     - User: `user`
     - Password: `password`
     - Example command: `ssh -p 2222 user@192.168.99.100`
     - **Edit the directory** `/var/www/html` and `/var/www/html/public` as you needed.
+
+1. SMTP
+   - Host and port:
+      - Docker CE: `localhost:1026` or `127.0.0.1:1026`
+      - Docker Toolbox: `192.168.99.100:1026`
 
 1. Optionally install **Drush** (is included in the Drupal composer installation) with Composer and then run command:
 
@@ -99,8 +108,8 @@ Content:
 
 1. Optionally configure your system `hosts` file:
 
-    - `127.0.0.1 project.example.com mailcatcher.example.com` (Docker CE)
-    - `192.168.99.100 project.example.com mailcatcher.example.com` (Docker Toolbox)
+    - Docker CE: `127.0.0.1 drupal.example.com adminer.example.com mailcatcher.example.com`
+    - Docker Toolbox: `192.168.99.100 drupal.example.com adminer.example.com mailcatcher.example.com`
 
    Path:
     - Linux: `/etc/hosts`
@@ -109,9 +118,15 @@ Content:
 
 ## Note
 
-Drupal 7 (handmade installation):
-- wget https://ftp.drupal.org/files/projects/drupal-7.77.zip
-- unzip drupal-7.77.zip
+Last version:
+- Drupal 9: `composer create-project drupal/recommended-project html --no-install`
+- Drupal 8: `composer create-project drupal/recommended-project:8.9.x-dev html --no-install`
+- Drupal 7: `composer create-project drupal-composer/drupal-project:7.x-dev html --no-install`
 
-Last version of Drupa 7:
-- composer create-project --no-install drupal-composer/drupal-project:7.x-dev html
+## Sending e-mails
+
+Docker CE (SMTP port 1026):
+   - ???
+
+Docker Toolbox (SMTP port 1025):
+   - Drupal require module https://www.drupal.org/project/smtp

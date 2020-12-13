@@ -133,7 +133,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.services.${COMPOSE_PROJECT_NAME}_adminer.loadbalancer.server.port=8080
-      - traefik.http.routers.${COMPOSE_PROJECT_NAME}_adminer.rule=Host(`${PROJECT_HOSTNAME}`) && Path(`${ADMINER_PATH}`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}_adminer.rule=Host(`${ADMINER_HOSTNAME}`)
       ## HTTPS only
 #      - traefik.http.routers.${COMPOSE_PROJECT_NAME}_adminer.tls=true
 

@@ -1,8 +1,8 @@
 # docker-compose-drupal
 
 Content:
-- Project stack for Drupal
-- Traefik
+- Drupal stack
+- Traefik router
 
 ## Requirements
 1. [Docker CE](https://download.docker.com?target=_blank) or [**Docker Toolbox**](https://github.com/docker/toolbox/releases?target=_blank) (Virtualbox)

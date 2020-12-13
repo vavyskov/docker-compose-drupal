@@ -23,11 +23,23 @@ You can set environment variables in `.env` file.
 
 1. Access to Traefik: 
 
-   - URL: `127.0.0.1:8080` or `localhost:8080` (Docker CE)
-   - URL: `192.168.99.100:8080` (Docker Toolbox)
-   - URL: `traefik.example.com` (etc/hosts)
+   - URL:
+      - Docker CE: `localhost:8080` or `127.0.0.1:8080`
+      - Docker Toolbox: `192.168.99.100:8080`
+      - Traefik (hosts): `traefik.example.com`
    - User: `traefik`
    - Password: `traefik`
+
+1. Optionally configure your system `hosts` file:
+
+   - Docker CE: `127.0.0.1 traefik.example.com`
+   - Docker Toolbox: `192.168.99.100 traefik.example.com`
+
+   Path:
+   - Linux: `/etc/hosts`
+   - macOX: `/private/etc/hosts`
+   - Windows: `C:\Windows\System32\drivers\etc\hosts`
+
 
 ## Network
 Show IP address:
