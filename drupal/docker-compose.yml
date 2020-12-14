@@ -111,7 +111,7 @@ services:
       - target: 80
         published: ${MAILCATCHER_PORT}
       - target: 25
-        published: ${MAILCATCHER_SMTP_PORT}
+        published: ${SMTP_PORT}
     networks:
       - frontend_network
     labels:
