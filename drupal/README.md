@@ -128,5 +128,7 @@ Last version:
 Docker CE (SMTP port 1026):
    - ???
 
-Docker Toolbox (SMTP port 1025):
+Docker Toolbox (SMTP port 1026):
+   - Web: OK
+   - Wordpress: OK
    - Drupal require module https://www.drupal.org/project/smtp
