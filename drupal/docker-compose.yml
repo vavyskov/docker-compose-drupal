@@ -1,0 +1,161 @@
+# SWO Docker
+#
+# docker network create backend_network
+# docker network create frontend_network
+# docker-compose up -d
+
+version: '3.5'
+
+services:
+
+  nginx:
+    image: vavyskov/nginx:${NGINX_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_nginx
+    hostname: ${PROJECT_HOSTNAME}
+    volumes:
+       - html_data:${PROJECT_ROOT}:nocopy
+#      - ./project:${PROJECT_ROOT}
+    depends_on:
+      - php-fpm
+    ports:
+      - target: 80
+        published: ${NGINX_PORT}
+      - target: 443
+        published: ${NGINX_PORT_SSL}
+    networks:
+      - frontend_network
+      - backend_network
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.${COMPOSE_PROJECT_NAME}_nginx.loadbalancer.server.port=80
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}_nginx.rule=Host(`${PROJECT_HOSTNAME}`)
+      ## HTTPS only
+#      - traefik.http.routers.${COMPOSE_PROJECT_NAME}_nginx.tls=true
+
+  php-fpm:
+    image: vavyskov/php:${PHP_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_php-fpm
+    environment:
+      PROJECT_MODE: ${PROJECT_MODE}
+      PHP_USER: ${PHP_USER}
+      SMTP_HOSTNAME: ${SMTP_HOSTNAME}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_FROM: ${SMTP_FROM}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+#      HOST_USER_ID: ${HOST_USER_ID}
+#      XDEBUG_HOSTNAME: ${XDEBUG_HOSTNAME}
+#      XDEBUG_PORT: ${XDEBUG_PORT}
+    networks:
+      - backend_network
+    volumes:
+      - html_data:${PROJECT_ROOT}
+#      - ./project:${PROJECT_ROOT}
+
+  ssh:
+    image: vavyskov/ssh:${SSH_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_ssh
+    depends_on:
+      - php-fpm
+    environment:
+      PROJECT_MODE: ${PROJECT_MODE}
+      SSH_HOME: ${SSH_HOME}
+      SSH_USER: ${SSH_USER}
+      SSH_PASSWORD: ${SSH_PASSWORD}
+      SMTP_HOSTNAME: ${SMTP_HOSTNAME}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_FROM: ${SMTP_FROM}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+#      HOST_USER_ID: ${HOST_USER_ID}
+#      XDEBUG_HOSTNAME: ${XDEBUG_HOSTNAME}
+#      XDEBUG_PORT: ${XDEBUG_PORT}
+    ports:
+      - target: 22
+        published: ${SSH_PORT}
+    networks:
+      - backend_network
+    volumes:
+      - html_data:${PROJECT_ROOT}:nocopy
+#      - ./project:${PROJECT_ROOT}
+
+  mariadb:
+    image: mariadb:${MARIADB_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_mariadb
+    environment:
+      MYSQL_DATABASE: ${MARIADB_DATABASE}
+      MYSQL_USER: ${MARIADB_USER}
+      MYSQL_PASSWORD: ${MARIADB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+    command: ["mysqld", "--character-set-server=utf8mb4", "--collation-server=utf8mb4_czech_ci"]
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    ports:
+      - target: 3306
+        published: ${MARIADB_PORT}
+    networks:
+      - backend_network
+
+  postgres:
+    image: postgres:${POSTGRES_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+      LC_COLLATE: utf8mb4_czech_ci
+      LC_CTYPE: utf8mb4_czech_ci
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - target: 5432
+        published: ${POSTGRES_PORT}
+    networks:
+      - backend_network
+
+  mailcatcher:
+    image: vavyskov/mailcatcher:${MAILCATCHER_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_mailcatcher
+    ports:
+      - target: 80
+        published: ${MAILCATCHER_PORT}
+      - target: 25
+        published: ${SMTP_PORT}
+    networks:
+      - frontend_network
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.${COMPOSE_PROJECT_NAME}_mailcatcher.loadbalancer.server.port=80
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}_mailcatcher.rule=Host(`${MAILCATCHER_HOSTNAME}`)
+      ## HTTPS only
+#      - traefik.http.routers.${COMPOSE_PROJECT_NAME}_mailcatcher.tls=true
+
+  adminer:
+    image: adminer:${ADMINER_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_adminer
+    ports:
+      - target: 8080
+        published: ${ADMINER_PORT}
+    networks:
+      - frontend_network
+      - backend_network
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.${COMPOSE_PROJECT_NAME}_adminer.loadbalancer.server.port=8080
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}_adminer.rule=Host(`${ADMINER_HOSTNAME}`)
+      ## HTTPS only
+#      - traefik.http.routers.${COMPOSE_PROJECT_NAME}_adminer.tls=true
+
+networks:
+  frontend_network:
+    external: true
+  backend_network:
+    external: true
+
+volumes:
+  html_data:
+    name: ${COMPOSE_PROJECT_NAME}_html_data
+  mariadb_data:
+    name: ${COMPOSE_PROJECT_NAME}_mariadb_data
+  postgres_data:
+    name: ${COMPOSE_PROJECT_NAME}_postgres_data

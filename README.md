@@ -1,9 +1,11 @@
 # docker-compose-drupal
 
-LAMP stack (Debian, Apache, MariaDB, PHP, Adminer, MailCatcher)
+Content:
+- Drupal stack
+- Traefik router
 
 ## Requirements
-1. [Docker CE](https://download.docker.com?target=_blank) or [**Docker Toolbox**](https://github.com/docker/toolbox/releases?target=_blank) (Virtualbox)
+1. [Docker CE](https://docs.docker.com/get-docker/?target=_blank) or [**Docker Toolbox**](https://github.com/docker/toolbox/releases?target=_blank) (Virtualbox)
 
 1. [Git](https://git-scm.com/?target=_blank) (optional)
 
@@ -18,65 +20,10 @@ LAMP stack (Debian, Apache, MariaDB, PHP, Adminer, MailCatcher)
         
        git clone https://github.com/vavyskov/docker-compose-drupal.git
 
-1. See `.env` file.
+1. See `project\README.md`
 
-1. Open the terminal, navigate to the directory containing the file `docker-compose.yml` and run command:
-
-       docker-compose up -d
-             
-    Other commands:
-    
-    - `docker-compose stop` (stop containers)
-    - `docker-compose start` (start containers)
-    - `docker-compose down` (destroy containers)
-    
-1. Open the web browser:
-
-    **Web**:
-    - URL: `localhost` or `192.168.99.100` (Docker Toolbox)
-
-    **Adminer**:
-    - URL: `localhost:8080` or `192.168.99.100:8080` (Docker Toolbox)
-    - Server: `mariadb` or `postgres`
-	- User: `drupal`
-	- Password: `drupal`
-	- Database: `drupal`
-	
-	**Mailcatcher** displays sent emails:
-	- URL: `localhost:1080` or `192.168.99.100:1080` (Docker Toolbox)
-
-1. SSH (SFTP)
-    - Port: `2202`
-    - User: `www-data`
-    - Password: `www-data`
-    - **Edit directory** `/var/www/html` as you needed
-
-1. Composer, Drupal, Drush
-    
-    Install Drupal with Composer and then run command:
-
-        source ~/.bashrc 
-
-1. Optional configure your system `hosts` file:
-
-	- `127.0.0.1 devel.example.com drupal.loc` (Docker CE)
-	- `192.168.99.100 devel.example.com drupal.loc` (Docker Toolbox)
-
-	Path:
-    - Linux: `/etc/hosts`
-	- macOX: `/private/etc/hosts`
-	- Windows: `C:\Windows\System32\drivers\etc\hosts`
+1. See `traefik\README.md`
 
 ## Note
 
 - Skype (Windows): Go to Tools → Options → Advanced → Connections and uncheck the box use port 80 and 443 as alternative.
-
-## ToDo
-
-Send a test e-mail:
-- php ./test/send-mail.php
-
-Samba:
-- port: 4451
-- user: drupal
-- password: drupal
